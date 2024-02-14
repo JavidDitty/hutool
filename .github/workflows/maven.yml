@@ -13,6 +13,11 @@ jobs:
       with:
         java-version: '8'
         distribution: 'temurin'
+    - name: Cache .m2
+      uses: actions/cache@v3
+      with:
+        key: ${{ runner.os }}-m2
+        path: $HOME/.m2
     - name: Run Cobertura Script
       run: |
         export TZ=Asia/Shanghai
@@ -21,5 +26,3 @@ jobs:
     - name: Curl Codecov
       if: ${{ success() }}
       run: bash <(curl -s https://codecov.io/bash)
-    
-        
