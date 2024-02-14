@@ -13,17 +13,17 @@ jobs:
       with:
         java-version: '8'
         distribution: 'temurin'
-    - name: Cache .m2
-      uses: actions/cache@v3
-      with:
-        key: ${{ runner.os }}-m2
-        path: $HOME/.m2
     - name: Export TZ
       run: export TZ=Asia/Shanghai
     - name: Mvn Install 
       run: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
     - name: Run Cobertura
       run: mvn cobertura:cobertura -Dcobertura.report.format=xml -Dmaven.javadoc.skip.true
+    - name: Cache .m2
+      uses: actions/cache@v3
+      with:
+        key: ${{ runner.os }}-m2
+        path: $HOME/.m2
     - name: Curl Codecov
       if: ${{ success() }}
       run: bash <(curl -s https://codecov.io/bash)
