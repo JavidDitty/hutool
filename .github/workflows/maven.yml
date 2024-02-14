@@ -14,12 +14,12 @@ jobs:
         java-version: '8'
         distribution: 'temurin'
     - name: Run Cobertura Script
-      run: 
+      run: |
         export TZ=Asia/Shanghai
         mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
         mvn cobertura:cobertura -Dcobertura.report.format=xml -Dmaven.javadoc.skip.true
     - name: Curl Codecov
       if: ${{ success() }}
       run: bash <(curl -s https://codecov.io/bash)
-      
+    
         
