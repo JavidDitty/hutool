@@ -17,4 +17,16 @@ jobs:
         with:
           java-version: ${{ matrix.java }}
           distribution: ${{ matrix.java-distribution }}
-      - run: bash <(curl -s https://codecov.io/bash)
+      - name: Cache
+        uses: actions/cache@v3
+        with:
+          key: ${{ runner.os }}-maven
+          path: $HOME/.m2
+      - name: Script
+        run: |
+          export TZ=Asia/Shanghai
+          mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+          mvn cobertura:cobertura -Dcobertura.report.format=xml -Dmaven.javadoc.skip=true
+      - name: Codecov
+        if: ${{ success() }}
+        run: bash <(curl -s https://codecov.io/bash)
